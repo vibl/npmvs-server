@@ -1,7 +1,7 @@
 const Koa = require('koa');
 const Router = require('koa-router');
 const cors = require('@koa/cors');
-const { init, getData } = require('./engine');
+const { init, getNpmsData, getDowloadsData } = require('./engine');
 
 require('dotenv').config();
 
@@ -24,15 +24,19 @@ const responseTime = async (ctx, next) => {
   const ms = Date.now() - start;
   ctx.set('X-Response-Time', `${ms}ms`);
 };
-router.get('/p/:name', async (ctx) => {
-  const data = await getData(ctx.params.id);
+router.get('/package/:packName', async (ctx) => {
+  const data = await getNpmsData(ctx.params.packName);
+  ctx.body = data;
+});
+router.get('/downloads/:packName', async (ctx) => {
+  const data = await getDowloadsData(ctx.params.packName);
   ctx.body = data;
 });
 app
 //.use(debug)
   .use(cors({origin:'*'}))
-  .use(responseTime)
   .use(logger)
+  .use(responseTime)
   .use(router.routes())
   .use(router.allowedMethods());
 
