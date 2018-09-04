@@ -1,0 +1,11 @@
+# Created by .ignore support plugin (hsz.mobi)
+### vibl template
+.idea/
+*.iml
+cache/
+out/
+gen/
+node_modules/
+
+/_tmp/
+/lib/
