@@ -22,7 +22,7 @@ const fluctuations = (list) => {
 const getTrends = async (range) => {
   await cache.init();
   const topPackages = getTopPackages();
-  const topPackagesStr = topPackages.join(',');
+  const topPackagesStr = topPackages.map(encodeURIComponent).join(',');
   const url = `${config.url.npmjs}/downloads/range/${range}/${topPackagesStr}`;
   const data = await fetchData(url);
   const result = pipe(

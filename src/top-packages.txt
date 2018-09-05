@@ -93,7 +93,7 @@ postcss
 webpack-dev-server
 url-loader
 node-fetch
-extract-text-webpack-plugin
+extractTree-text-webpack-plugin
 chokidar
 jade
 eslint-plugin-import

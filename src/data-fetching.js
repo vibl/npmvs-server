@@ -6,7 +6,7 @@ const config = {
     npms: 'https://api.npms.io',
   }
 };
-
+// `encodeURIComponent` is needed here because `packageName` was decoded by Koa.
 const fetchDownloadsData = async (packName, range) => {
   const url = `${config.url.npmjs}/downloads/range/${range}/${encodeURIComponent(packName)}`;
   return fetchData(url);
