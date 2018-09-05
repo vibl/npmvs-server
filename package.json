@@ -10,7 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "@koa/cors": "^2.2.2",
-    "@octokit/rest": "^15.11.0",
     "axios": "^0.18.0",
     "cacache": "^11.2.0",
     "catbox": "^10.0.2",
@@ -19,6 +18,8 @@
     "koa": "^2.5.2",
     "koa-body": "^4.0.4",
     "koa-router": "^7.4.0",
-    "memcache-client-memoizer": "^2.1.1"
+    "mem": "^4.0.0",
+    "memcache-client-memoizer": "^2.1.1",
+    "ramda": "^0.25.0"
   }
 }

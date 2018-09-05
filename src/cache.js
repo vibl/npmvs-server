@@ -2,6 +2,8 @@ const catbox = require('catbox');
 const catboxDisk = require('catbox-disk');
 const { memoizer } = require('memcache-client-memoizer');
 
+const defaultTTL = 7 * 24 * 3600 * 1000 ; // 7 days
+
 const cache = new catbox.Client(catboxDisk, {
   partition: 'test',
   cleanEvery: 3 * 3600 * 1000, // 3 hours
@@ -10,9 +12,11 @@ const cache = new catbox.Client(catboxDisk, {
 
 let started = false;
 
-const mem = (fn, TTL, stringify = true) => {
+const init = async () => cache.start();
+
+const mem = (fn, TTL = defaultTTL, stringify = true) => {
   if( ! started ) {
-    cache.start();
+    init();
     started = true;
   }
   const keyFn =  (...args) => ({
@@ -31,6 +35,7 @@ const mem = (fn, TTL, stringify = true) => {
 const {get, set} = cache;
 
 module.exports = {
+  init,
   get,
   set,
   mem,
