@@ -8,5 +8,5 @@ app.use(ctx => {
 const port = process.env.SERVER_PORT;
 
 app.listen(port);
-console.logn`Listening on port ${port}...`);
+console.log(`Listening on port ${port}...`);
 
