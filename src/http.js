@@ -14,6 +14,6 @@ const fetchData = cache.mem(getData, TTL, false);
 module.exports = {
   ...axios,
   getData,
-  fetchData: fetch,
+  fetch,
   fetchData,
 };

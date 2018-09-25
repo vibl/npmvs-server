@@ -4,10 +4,12 @@ const { memoizer } = require('memcache-client-memoizer');
 
 const defaultTTL = 7 * 24 * 3600 * 1000 ; // 7 days
 
+const cachePath = __dirname + '/../cache';
+
 const cache = new catbox.Client(catboxDisk, {
   partition: 'test',
   cleanEvery: 3 * 3600 * 1000, // 3 hours
-  cachePath: __dirname + '/../cache',
+  cachePath,
 });
 
 let started = false;

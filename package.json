@@ -11,15 +11,26 @@
   "dependencies": {
     "@koa/cors": "^2.2.2",
     "axios": "^0.18.0",
+    "bignumber.js": "^7.2.1",
     "cacache": "^11.2.0",
     "catbox": "^10.0.2",
     "catbox-disk": "^3.0.0",
+    "catbox-memory": "^3.1.2",
+    "deep-compact": "^1.1.0",
     "dotenv": "^6.0.0",
+    "gh-issues-stats": "^3.0.1",
+    "got": "^9.2.2",
+    "hosted-git-info": "^2.7.1",
     "koa": "^2.5.2",
     "koa-body": "^4.0.4",
     "koa-router": "^7.4.0",
+    "lodash": "^4.17.11",
     "mem": "^4.0.0",
     "memcache-client-memoizer": "^2.1.1",
-    "ramda": "^0.25.0"
+    "moment": "^2.22.2",
+    "pino": "^3.4.0",
+    "promise-retry": "^1.1.1",
+    "ramda": "^0.25.0",
+    "token-dealer": "^3.0.0"
   }
 }
