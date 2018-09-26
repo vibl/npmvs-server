@@ -5,7 +5,7 @@ const dbConfig = {
   port: 5432,
   database: 'npmvs',
   user: 'postgres',
-  password: '%2M7xn9tM@Y'
+  password: 'h4HzEQ65dYpN'
 };
 
 
