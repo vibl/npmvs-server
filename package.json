@@ -32,6 +32,7 @@
     "pino": "^3.4.0",
     "promise-retry": "^1.1.1",
     "ramda": "^0.25.0",
+    "redux-saga": "^0.16.0",
     "token-dealer": "^3.0.0"
   }
 }
