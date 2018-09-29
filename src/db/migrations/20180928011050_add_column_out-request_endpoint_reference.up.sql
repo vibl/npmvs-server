@@ -1,0 +1,6 @@
+BEGIN;
+
+ALTER TABLE outreq
+  ADD COLUMN endpoint INTEGER REFERENCES source NOT NULL;
+
+COMMIT;

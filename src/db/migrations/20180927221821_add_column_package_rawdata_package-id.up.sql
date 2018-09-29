@@ -1,0 +1,6 @@
+BEGIN;
+
+  ALTER TABLE package_old
+    ADD COLUMN package_id TEXT UNIQUE NOT NULL;
+
+COMMIT;

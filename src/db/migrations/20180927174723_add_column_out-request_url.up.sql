@@ -1,0 +1,5 @@
+BEGIN;
+  ALTER TABLE outreq
+      ADD COLUMN url TEXT;
+
+COMMIT;

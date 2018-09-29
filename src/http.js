@@ -1,15 +1,17 @@
 const axios = require('axios');
-const cache = require('./cache');
+const {cached} = require('./cache');
 
 const TTL = 7*24*3600*1000; // 7 days
 
-const getData = async (...args) => {
-  const resp = await axios.get(...args);
+const withData = fn => async (...args) => {
+  const resp = await fn(...args);
   return resp.data;
 };
-const fetch = cache.mem(axios.get, TTL, false);
+const getData = withData(axios.get);
 
-const fetchData = cache.mem(getData, TTL, false);
+const fetch = cached(axios.get, 'fetch');
+
+const fetchData = withData(fetch);
 
 module.exports = {
   ...axios,

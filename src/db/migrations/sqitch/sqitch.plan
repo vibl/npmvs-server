@@ -1,0 +1,5 @@
+%syntax-version=1.0.0
+%project=npmvs
+
+appschema 2018-09-26T11:51:34Z Vianney Stroebel <vianney@stroebel.fr> # Add schema
+response [appschema] 2018-09-26T12:19:19Z Vianney Stroebel <vianney@stroebel.fr> # Creates table to store json responses downloaded from various endpoints.

@@ -1,44 +1,36 @@
-const catbox = require('catbox');
-const catboxDisk = require('catbox-disk');
-const { memoizer } = require('memcache-client-memoizer');
+const cacache = require('cacache');
+const {map, pick} = require('ramda');
 
-const defaultTTL = 7 * 24 * 3600 * 1000 ; // 7 days
+const rootPath = '/home/vianney/dev/idea/npmvs/server/src/data/.cache/';
 
-const cachePath = __dirname + '/../cache';
+const fnWithPath = (path) => (fn) => (...args) => fn(path, ...args);
 
-const cache = new catbox.Client(catboxDisk, {
-  partition: 'test',
-  cleanEvery: 3 * 3600 * 1000, // 3 hours
-  cachePath,
+const nsCache = (namespace) => ({
+  ...cacache,
+  ...map(fnWithPath(rootPath + namespace), pick(['get', 'put', 'ls', 'verify'], cacache)),
 });
 
-let started = false;
-
-const init = async () => cache.start();
-
-const mem = (fn, TTL = defaultTTL, stringify = true) => {
-  if( ! started ) {
-    init();
-    started = true;
+const cached = (fn, namespace, cacheArgs) => {
+  const mem = new Map();
+  const cache = nsCache(namespace);
+  return async (...fnArgs) => {
+    const key = JSON.stringify(fnArgs);
+    if( mem.has(key) ) return mem.get(key);
+    try {
+      let got = await cache.get(key);
+      return got;
+    } catch { }
+    const result = await fn(...fnArgs);
+    mem.set(key, result);
+    const str = JSON.stringify(result);
+    cache.put(key, str);
+    return result;
   }
-  const keyFn =  (...args) => ({
-    segment: '_',
-    id: stringify ? JSON.stringify(args) : args[0]
-  });
-  return memoizer({
-    client: cache,
-    fn,
-    keyFn,
-    setOptions: TTL,
-    cacheResultTransformFn: ({ item }) => item,
-  });
-}
-
-const {get, set} = cache;
+};
 
 module.exports = {
-  init,
-  get,
-  set,
-  mem,
+  ...cacache,
+  ...nsCache('default'),
+  cached,
 };
+
