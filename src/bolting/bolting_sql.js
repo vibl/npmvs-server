@@ -15,10 +15,11 @@ sql.package_rawdata_Count = `
 sql.package_BatchList = `
   SELECT package.id, package.name FROM package
   LEFT OUTER JOIN
-  (SELECT * FROM package_input WHERE source = $(source)) as downloaded
+  (SELECT package FROM package_input WHERE source = $(source) ) AS downloaded
     ON package.id = downloaded.package
-WHERE downloaded.package IS NULL
-LIMIT $(batchSize)`;
+  WHERE downloaded.package IS NULL
+  LIMIT $(batchSize)
+`;
 sql.package_input_Upsert = `
   INSERT INTO package_input as p ($(this~))
     VALUES ($(this:csv))
