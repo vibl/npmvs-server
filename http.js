@@ -1,5 +1,5 @@
 const axios = require('axios');
-const {cached} = require('../server/src/cache');
+const {cached} = require('./cache');
 
 const TTL = 7*24*3600*1000; // 7 days
 
