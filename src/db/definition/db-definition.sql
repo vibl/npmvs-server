@@ -44,6 +44,23 @@ CREATE TRIGGER package_updated
   FOR EACH ROW EXECUTE PROCEDURE updated_now();
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE TABLE source
+(
+  id SERIAL PRIMARY KEY,
+  full_name  TEXT,
+  url        TEXT,
+  short_name TEXT
+);
+
+CREATE INDEX source_full_name_index
+  ON source (full_name);
+
+CREATE INDEX source_url_index
+  ON source (url);
+
+CREATE INDEX source_short_name_index
+  ON source (short_name);
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE public.package_input (
   package INTEGER REFERENCES public.package NOT NULL,
   source  INTEGER REFERENCES public.source  NOT NULL,
