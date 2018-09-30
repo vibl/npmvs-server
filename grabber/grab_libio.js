@@ -1,7 +1,7 @@
 const {q, insert} = require('../db');
 const http = require('../http');
 const sql = require('./sql_tpl');
-const config = require('../../server/src/config');
+const config = require('../config');
 const {getTimestamp, sleep} = require('../util/vibl-util');
 
 const batchSize = 60;
