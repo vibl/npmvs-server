@@ -4,7 +4,6 @@ const sql = require('./bolting_sql');
 const config = require('../config');
 const {getTimestamp, sleep} = require('../util/vibl-util');
 
-debugger;
 const batchSize = 60;
 // Don't use viblApiToken because I don't want to be identified, let alone blacklisted,
 // with my real GitHub account.
