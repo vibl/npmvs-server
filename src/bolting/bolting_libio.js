@@ -65,6 +65,7 @@ const downloadWithAccount = async ({accountOffsetDelay, apiToken}) => {
   }
 };
 const main = async () => {
+  console.log('Downloading Libraries.io packages data...');
   const accounts = config.apiTokens.libio.map( (apiToken, i) => ({accountOffsetDelay: i * 6, apiToken}));
   try {
     await Promise.all(accounts.map(downloadWithAccount));

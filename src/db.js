@@ -1,14 +1,6 @@
 const pgp = require('pg-promise')({});
 
-const dbConfig = {
-  host: '0.0.0.0',
-  port: 5432,
-  database: 'npmvs',
-  user: 'postgres',
-  password: 'h4HzEQ65dYpN'
-};
-
-const dbP = pgp(dbConfig);
+const dbP = pgp(process.env.NPMVS_DB);
 let db;
 
 const q = async (arg1, arg2) => {
