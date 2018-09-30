@@ -1,4 +1,6 @@
 -- auto-generated definition
+BEGIN;
+
 CREATE TABLE outreq
 (
   id       SERIAL PRIMARY KEY,
@@ -12,3 +14,4 @@ CREATE INDEX outreq_error_index
 CREATE INDEX outreq_received_index
   ON outreq (received);
 
+COMMIT;

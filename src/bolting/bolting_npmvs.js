@@ -22,7 +22,7 @@ const getResponseStats = ({outreq}) => {
   return `${getTimestamp(outreq.received)}, ${downloadCount}, ${elapsed} sec, ${respTime} sec, ${speed} items/h`;
 };
 const getData = async (batch) => {
-  let [outreq] = await insert({}, 'outreq');
+  let [outreq] = await insert({received: null}, 'outreq'); // Inserting nothing, just to set the `sent` timestamp.
   try {
     const {data} = await http.post(url, batch);
     downloadCount += data.length;

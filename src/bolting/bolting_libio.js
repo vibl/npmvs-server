@@ -27,10 +27,10 @@ const getResponseStats = ({outreq}) => {
   return `${getTimestamp(outreq.received)}, ${downloadCount}, ${elapsed} sec, ${respTime} sec, ${speed} items/h`;
 };
 const getData = (getUrl) => async (pack) => {
+  let [outreq] = await insert({received: null}, 'outreq');
   const url = getUrl(pack.name);
-  let [outreq] = await insert({url}, 'outreq');
   try {
-    const {data} = await http.get(outreq.url);
+    const {data} = await http.get(url);
     downloadCount++;
     [outreq] = await logResponse(outreq);
     await q({package:pack.id, source, outreq:outreq.id, data}, sql.package_input_Upsert);
