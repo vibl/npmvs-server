@@ -5,7 +5,7 @@ const {keys} = require('ramda');
 const {getTimestamp, sleep} = require('../util/vibl-util');
 const {indexValWithKey} = require('../util/vibl-fp');
 
-const batchSize = 10;
+const batchSize = 5;
 const url = `https://api.npms.io/v2/package/mget`;
 const source = 2;
 
