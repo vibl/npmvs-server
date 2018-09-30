@@ -417,6 +417,17 @@ const deIndex = curry2( (fieldName, index) => {
   return result;
 });
 const indexByProp = curry2 ( (property, list) => indexBy(prop(property), list) );
+// Take an arrary of objects and return an object with keys corresponding to the two properties
+// propKey and propVal supplied as arguments.
+const indexValWithKey = curry3 ( (propKey, propVal, list) => {
+  const acc = {};
+  for(let obj of list) {
+    const key = obj[propKey];
+    const val = obj[propVal];
+    acc[key] = val;
+  }
+  return acc;
+});
 
 const reIndex = curry3( (oldIndexProp, newIndexProp, index) => {
   let key, result = {};
@@ -496,7 +507,7 @@ const viblPure = {
   discard, dissocAll, doesMatch, dotPath, dotStringToPath, equals, equalsAny,
   fnOr, filterKeys, filterP, flipAll, from,
   geoMean, get, getColPath, getDotPath, gradient, hsl,
-  ifDefinedElse, ident, indexByProp, interleave, isBlank, isEmpty, isFunction,
+  ifDefinedElse, ident, indexByProp, indexValWithKey, interleave, isBlank, isEmpty, isFunction,
   isNegative, isNumber, isObject, isObjectLike, isPlainObject, isString,
   keep, keepRandom,
   lacksElementsOf, lensDotPath, lineBreaksToSpace, listMax, listMin, log,

@@ -1,7 +1,7 @@
 const {q, insert} = require('../db');
-const http = require('../http');
-const sql = require('./bolting_sql');
-const config = require('../config');
+const http = require('../../server/src/http');
+const sql = require('./sql_tpl');
+const config = require('../../server/src/config');
 const {getTimestamp, sleep} = require('../util/vibl-util');
 
 const batchSize = 60;
@@ -76,7 +76,7 @@ const main = async () => {
     console.log(err);
   }
 };
-main().then(console.log).catch(console.error);
+module.exports = main;
 
 
 
