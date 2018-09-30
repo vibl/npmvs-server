@@ -18,7 +18,7 @@ const logResponse = (outreq) => q(outreq,
 
 const urlBuilder = ({endpointUrl, apiToken}) => {
   const queryStr = `?api_key=${apiToken}`;
-  return (packName) =>  endpointUrl + packName + queryStr;
+  return (packName) =>  endpointUrl + encodeURIComponent(packName) + queryStr;
 };
 const getResponseStats = ({outreq}) => {
   const respTime = (outreq.received - outreq.sent) / 1000;

@@ -4,7 +4,7 @@ BEGIN;
 CREATE OR REPLACE FUNCTION updated_now()
   RETURNS TRIGGER
 LANGUAGE plpgsql
-SECURITY definer
+SECURITY DEFINER
 AS $$
 BEGIN
   NEW.updated = now();
@@ -46,7 +46,7 @@ CREATE TRIGGER package_updated
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 CREATE TABLE source
 (
-  id SERIAL PRIMARY KEY,
+  id         SERIAL PRIMARY KEY,
   full_name  TEXT,
   url        TEXT,
   short_name TEXT
@@ -91,15 +91,17 @@ CREATE TRIGGER package_input_updated
 DROP VIEW IF EXISTS package_input_details;
 CREATE OR REPLACE VIEW package_input_details AS
   SELECT
-    package.name AS package,
+    package.name      AS package,
     source.short_name AS source,
     this.data,
     this.updated,
-    this.package AS package_id,
-    this.source  AS source_id
+    this.package      AS package_id,
+    this.source       AS source_id,
+    outreq.error      AS error
   FROM package_input this
     INNER JOIN package ON package.id = this.package
-    INNER JOIN source ON source.id = this.source;
+    INNER JOIN source ON source.id = this.source
+    INNER JOIN outreq ON outreq.id = this.outreq;
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
