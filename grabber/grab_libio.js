@@ -59,7 +59,7 @@ const downloadWithAccount = async ({accountOffsetDelay, apiToken}) => {
     const getUrl = urlBuilder({endpointUrl, apiToken});
     await Promise.all(batch.map(getData(getUrl)));
     const batchDuration = Date.now() - batchTimer;
-    const throttleDelay = 63 * 1000 - batchDuration; // Adding 2 seconds to be on the safe side. Otherwise 429 errors keep popping up.
+    const throttleDelay = 65 * 1000 - batchDuration; // Adding 2 seconds to be on the safe side. Otherwise 429 errors keep popping up.
     if( throttleDelay > 0 ) {
       // console.log(`${getTimestamp()}: THROTTLE: sleeping for ${Math.round(throttleDelay / 1000)} seconds in order to obey API rate limit`);
       await sleep(throttleDelay)
