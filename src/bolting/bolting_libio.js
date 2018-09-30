@@ -4,7 +4,7 @@ const sql = require('./bolting_sql');
 const config = require('../config');
 const {getTimestamp, sleep} = require('../util/vibl-util');
 
-const batchSize = 58;
+const batchSize = 60;
 // Don't use viblApiToken because I don't want to be identified, let alone blacklisted,
 // with my real GitHub account.
 const viblApiToken = "653f8ad38c7c9c60ac58a88f8e9a0876";
@@ -29,10 +29,8 @@ const getResponseStats = ({outreq}) => {
 const getData = (getUrl) => async (pack) => {
   const url = getUrl(pack.name);
   let [outreq] = await insert({url}, 'outreq');
-  let data;
   try {
-    const resp = await http.get(outreq.url);
-    data = resp.data;
+    const {data} = await http.get(outreq.url);
     downloadCount++;
     [outreq] = await logResponse(outreq);
     await q({package:pack.id, source, outreq:outreq.id, data}, sql.package_input_Upsert);
@@ -54,12 +52,12 @@ const downloadWithAccount = async ({accountOffsetDelay, apiToken}) => {
   while(true) {
     await sleep(accountOffsetDelay * 1000);
     const batchTimer = Date.now();
-    const batchList = await q({source, batchSize}, sql.package_BatchList);
-    if( batchList.length === 0 ) break;
+    const batch = await q({source, batchSize}, sql.package_BatchList);
+    if( batch.length === 0 ) break;
     const getUrl = urlBuilder({endpointUrl, apiToken});
-    await Promise.all(batchList.map(getData(getUrl)));
+    await Promise.all(batch.map(getData(getUrl)));
     const batchDuration = Date.now() - batchTimer;
-    const throttleDelay = 60 * 1000 - batchDuration;
+    const throttleDelay = 62 * 1000 - batchDuration; // Adding 2 seconds to be on the safe side. Otherwise 429 errors keep popping up.
     if( throttleDelay > 0 ) {
       // console.log(`${getTimestamp()}: THROTTLE: sleeping for ${Math.round(throttleDelay / 1000)} seconds in order to obey API rate limit`);
       await sleep(throttleDelay)
@@ -67,7 +65,7 @@ const downloadWithAccount = async ({accountOffsetDelay, apiToken}) => {
   }
 };
 const main = async () => {
-  const accounts = config.apiTokens.libio.map( (apiToken, i) => ({accountOffsetDelay: i * 3, apiToken}));
+  const accounts = config.apiTokens.libio.map( (apiToken, i) => ({accountOffsetDelay: i * 6, apiToken}));
   try {
     await Promise.all(accounts.map(downloadWithAccount));
   }
