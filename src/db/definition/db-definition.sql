@@ -66,8 +66,10 @@ CREATE TABLE public.package_input (
   source  INTEGER REFERENCES public.source  NOT NULL,
   outreq  INTEGER REFERENCES public.outreq  NOT NULL,
   data    JSONB                             NOT NULL,
-  updated TIMESTAMPTZ DEFAULT now()
+  updated TIMESTAMPTZ DEFAULT now(),
+  CONSTRAINT package_input_pk PRIMARY KEY (package, source)
 );
+
 CREATE INDEX package_input_package_index
   ON public.package_input (package);
 CREATE INDEX package_input_source_index
@@ -84,6 +86,7 @@ CREATE TRIGGER package_input_updated
   BEFORE UPDATE
   ON public.package_input
   FOR EACH ROW EXECUTE PROCEDURE updated_now();
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 DROP VIEW IF EXISTS package_input_details;
 CREATE OR REPLACE VIEW package_input_details AS

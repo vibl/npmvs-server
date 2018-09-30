@@ -39,8 +39,10 @@ const getData = (getUrl) => async (pack) => {
     const error = resp.response.status;
     await logResponse({...outreq, error});
     if( error === 404 ) {
+
       // Insert a row with an empty `data` field. DO NOT update existing rows!
-      await q({package:pack.id, source, outreq:outreq.id, data: {}},
+      //TODO: convert all empty object `data` fields into a null `data`.
+      await q({package:pack.id, source, outreq:outreq.id, data: null},
         `INSERT INTO package_input as p ($(this~)) VALUES ($(this:csv)) ON CONFLICT DO NOTHING`);
     } else {
       console.log(`${getTimestamp()}: ERROR ${error}`);
@@ -57,7 +59,7 @@ const downloadWithAccount = async ({accountOffsetDelay, apiToken}) => {
     const getUrl = urlBuilder({endpointUrl, apiToken});
     await Promise.all(batch.map(getData(getUrl)));
     const batchDuration = Date.now() - batchTimer;
-    const throttleDelay = 62 * 1000 - batchDuration; // Adding 2 seconds to be on the safe side. Otherwise 429 errors keep popping up.
+    const throttleDelay = 63 * 1000 - batchDuration; // Adding 2 seconds to be on the safe side. Otherwise 429 errors keep popping up.
     if( throttleDelay > 0 ) {
       // console.log(`${getTimestamp()}: THROTTLE: sleeping for ${Math.round(throttleDelay / 1000)} seconds in order to obey API rate limit`);
       await sleep(throttleDelay)
