@@ -1,6 +1,6 @@
 require('dotenv').config();
 const pgp = require('pg-promise')({});
-console.log('DB connection:', process.env.NPMVS_DB);
+
 const dbP = pgp(process.env.NPMVS_DB);
 let db;
 
