@@ -25,13 +25,17 @@ const getData = async (pack) => {
     [outreq] = await logResponse(outreq);
     await q({package:pack.id, source, outreq:outreq.id, data}, sql.package_input_Upsert);
   }
-  catch(resp) {
-    const error = resp.response.status;
-    await logResponse({...outreq, error});
-    if( error === 404 ) {
-      // Insert a row with an empty `data` field. DO NOT update existing rows!
-      await q({package:pack.id, source, outreq:outreq.id, data: null},
-        `INSERT INTO package_input as p ($(this~)) VALUES ($(this:csv)) ON CONFLICT DO NOTHING`);
+  catch(error) {
+    if( error.response ) {
+      status = error.response.status;
+      await logResponse({...outreq, status});
+      if( status === 404 || status === 500 ) {
+        // Insert a row with an empty `data` field. DO NOT update existing rows!
+        await q({package:pack.id, source, outreq:outreq.id, data: null},
+          `INSERT INTO package_input as p ($(this~)) VALUES ($(this:csv)) ON CONFLICT DO NOTHING`);
+      } else {
+        console.log(`${getTimestamp()}: npms : ERROR ${status} (${url})`);
+      }
     } else {
       console.log(`${getTimestamp()}: npms : ERROR ${error} (${url})`);
     }
