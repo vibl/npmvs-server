@@ -1,7 +1,7 @@
+require('dotenv').config();
 const pgp = require('pg-promise')({});
-const config = require('config');
 
-const dbP = pgp(config.get('db'));
+const dbP = pgp(process.env.NPMVS_DB);
 let db;
 
 const q = async (arg1, arg2) => {

@@ -14,19 +14,22 @@ module.exports = async (source, pack) => {
     [outreq] = await logResponse(outreq);
     await q({package:pack.id, source: source.id, outreq:outreq.id, data}, sql.package_input_Upsert);
   }
-  catch(error) {
-    if( error.response ) {
-      status = error.response.status;
+  catch(err) {
+    let error;
+    if( err.response ) {
+      status = err.response.status;
       await logResponse({...outreq, status});
       if( [400, 404, 500].includes(status) ) {
         // Insert a row with an empty `data` field. DO NOT update existing rows!
         await q({package:pack.id, source: source.id, outreq:outreq.id, data: null},
           `INSERT INTO package_input as p ($(this~)) VALUES ($(this:csv)) ON CONFLICT DO NOTHING`);
       } else {
-        console.log(`${getTimestamp()}: npms : ERROR ${status} (${url})`);
+        error = status;
       }
     } else {
-      console.log(`${getTimestamp()}: npms : ERROR ${error} (${url})`);
+      error = err;
     }
+    console.log(`${getTimestamp()}: ${source.name} : ERROR ${error} (${url})`);
+
   }
 };

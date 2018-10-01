@@ -1,10 +1,10 @@
 const {q} = require('./db');
-const config = require('config');
 const getData = require('./grabber/getPackageDataFromSource');
 
 const endpointUrl = `https://api.npms.io/v2/package/`;
 const source = {
   id: 2,
+  name: 'nmps',
   getUrl: (packName) => endpointUrl + encodeURIComponent(packName.toLowerCase()),
 };
 

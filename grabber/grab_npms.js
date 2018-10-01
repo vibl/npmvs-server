@@ -12,6 +12,7 @@ const throttleSleep = throttleSleeper(minRequestDuration);
 
 const source = {
   id: 2,
+  name: 'npms',
   getUrl: (packName) => endpointUrl + encodeURIComponent(packName.toLowerCase()),
 };
 

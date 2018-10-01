@@ -30,6 +30,7 @@ const getAccountConfig = (apiToken, i) => {
 const downloadWithAccount = async ({accountOffsetDelay, apiToken, throttleSleep}) => {
   const source = {
     id: sourceId,
+    name: 'libio_main',
     getUrl: urlBuilder(apiToken),
   };
   while(true) {
