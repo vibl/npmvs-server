@@ -31,7 +31,7 @@ const logResponse = (outreq) => q(outreq,
 
 const getData = (apiToken) => async (pack) => {
   let [outreq] = await insert({received: null}, 'outreq');
-  const url = endpointUrl + encodeURIComponent(pack.name) + '?api_key=' + apiToken;
+  const url = endpointUrl + encodeURIComponent(pack.name.toLowerCase()) + '?api_key=' + apiToken;
 
   try {
     const {data} = await http.get(url);

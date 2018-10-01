@@ -18,7 +18,7 @@ const logResponse = (outreq) => q(outreq,
 
 const getData = async (pack) => {
   let [outreq] = await insert({received: null}, 'outreq');
-  const url = endpointUrl + encodeURIComponent(pack.name);
+  const url = endpointUrl + encodeURIComponent(pack.name.toLowerCase());
   try {
     const {data} = await http.get(url);
     downloadCount++;
