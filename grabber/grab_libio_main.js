@@ -47,7 +47,7 @@ const getData = (apiToken) => async (pack) => {
       await q({package:pack.id, source, outreq:outreq.id, data: null},
         `INSERT INTO package_input as p ($(this~)) VALUES ($(this:csv)) ON CONFLICT DO NOTHING`);
     } else {
-      console.log(`${getTimestamp()}: libio : ERROR ${error}`);
+      console.log(`${getTimestamp()}: libio : ERROR ${error} (${url})`);
     }
   }
 };
