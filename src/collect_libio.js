@@ -1,5 +1,5 @@
 
-const grab_libio = require('./grabber/grab_libio_main');
+const grab_libio = require('../grabber/grab_libio_main');
 
 const main = async () => {
   return grab_libio();

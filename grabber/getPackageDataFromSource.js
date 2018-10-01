@@ -1,4 +1,4 @@
-const {q, insert} = require('../db');
+const {q, insert} = require('../src/db');
 const http = require('../http');
 const sql = require('./sql_tpl');
 const {getTimestamp} = require('../util/vibl-util');

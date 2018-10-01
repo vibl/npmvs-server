@@ -74,11 +74,11 @@ CREATE TABLE public.package_input (
 );
 
 CREATE INDEX package_input_package_index
-  ON public.package_input (package);
+  ON public.package_input (pack_id);
 CREATE INDEX package_input_source_index
-  ON public.package_input (source);
+  ON public.package_input (source_id);
 CREATE INDEX package_input_outreq_index
-  ON public.package_input (outreq);
+  ON public.package_input (outreq_id);
 CREATE INDEX package_input_updated_index
   ON public.package_input (updated);
 
@@ -98,13 +98,13 @@ CREATE OR REPLACE VIEW package_input_details AS
     source.short_name AS source,
     this.data,
     this.updated,
-    this.package      AS package_id,
-    this.source       AS source_id,
+    this.pack_id      AS package_id,
+    this.source_id       AS source_id,
     outreq.error      AS error
   FROM package_input this
-    INNER JOIN package ON package.id = this.package
-    INNER JOIN source ON source.id = this.source
-    INNER JOIN outreq ON outreq.id = this.outreq;
+    INNER JOIN package ON package.id = this.pack_id
+    INNER JOIN source ON source.id = this.source_id
+    INNER JOIN outreq ON outreq.id = this.outreq_id;
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------

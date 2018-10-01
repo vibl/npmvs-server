@@ -1,4 +1,4 @@
-const {q} = require('../db');
+const {q} = require('../src/db');
 const sql = require('./sql_tpl');
 const getData = require('./getPackageDataFromSource');
 
