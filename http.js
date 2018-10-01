@@ -13,7 +13,10 @@ const fetch = cached(axios.get, 'fetch');
 
 const fetchData = withData(fetch);
 
-const sanitize = (data) => JSON.parse(data.replace('\u0000', ''));
+// Postgres does not support the null byte character in JSON (https://docs.postgresql.fr/9.4/release-9-4-1.html),
+// so we need to remove it but also it representation "\\u0000", which would be converted
+// in the null byte by JSON.parse.
+const sanitize = (data) => JSON.parse(data.replace(/(\0|\\u0000)/g, ''));
 
 const getSanitized = (url, config = {}) => axios.get(url, {...config, transformResponse: sanitize});
 

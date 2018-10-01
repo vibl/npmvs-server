@@ -12,6 +12,7 @@
     "axios": "^0.18.0",
     "cacache": "^11.2.0",
     "changes-stream": "^2.2.0",
+    "config": "^2.0.1",
     "date-fns": "^1.29.0",
     "deep-eql": "^3.0.1",
     "dotenv": "^6.0.0",

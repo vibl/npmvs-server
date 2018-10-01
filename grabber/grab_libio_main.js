@@ -27,7 +27,6 @@ const getAccountConfig = (apiToken, i) => {
     throttleSleep,
   };
 };
-
 const downloadWithAccount = async ({accountOffsetDelay, apiToken, throttleSleep}) => {
   const source = {
     id: sourceId,
