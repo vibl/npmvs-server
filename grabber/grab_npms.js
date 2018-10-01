@@ -1,13 +1,16 @@
-const {q, insert, pgp} = require('../db');
+const {q, insert} = require('../db');
 const http = require('../http');
 const sql = require('./sql_tpl');
-const {getTimestamp, sleep} = require('../util/vibl-util');
+const {getTimestamp, throttleSleeper} = require('../util/vibl-util');
 
 const batchSize = 1000;
-const throttleDelay = 1000;
 const endpointUrl = `https://api.npms.io/v2/package/`;
 const source = 2;
+const rateLimit = 10; // Requests per second.
+const minRequestDuration = 1000 / rateLimit; // In ms.
+const throttleSleep = throttleSleeper(minRequestDuration);
 
+let tick = Date.now();
 let downloadCount = 0;
 
 const logResponse = (outreq) => q(outreq,
@@ -37,7 +40,7 @@ const getData = async (pack) => {
 const getBatchData = async (batch) => {
   for(let pack of batch) {
     await getData(pack);
-    await sleep(throttleDelay)
+    await throttleSleep();
   }
 };
 const main = async () => {
