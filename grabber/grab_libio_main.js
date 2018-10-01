@@ -34,7 +34,7 @@ const getData = (apiToken) => async (pack) => {
   const url = endpointUrl + encodeURIComponent(pack.name.toLowerCase()) + '?api_key=' + apiToken;
 
   try {
-    const {data} = await http.get(url);
+    const {data} = await http.getSanitized(url);
     downloadCount++;
     [outreq] = await logResponse(outreq);
     await q({package:pack.id, source, outreq:outreq.id, data}, sql.package_input_Upsert);

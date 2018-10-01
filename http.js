@@ -13,9 +13,14 @@ const fetch = cached(axios.get, 'fetch');
 
 const fetchData = withData(fetch);
 
+const sanitize = (data) => JSON.parse(data.replace('\u0000', ''));
+
+const getSanitized = (url, config = {}) => axios.get(url, {...config, transformResponse: sanitize});
+
 module.exports = {
   ...axios,
   getData,
+  getSanitized,
   fetch,
   fetchData,
 };
