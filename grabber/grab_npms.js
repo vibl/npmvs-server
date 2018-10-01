@@ -29,7 +29,7 @@ const getData = async (pack) => {
     if( error.response ) {
       status = error.response.status;
       await logResponse({...outreq, status});
-      if( status === 404 || status === 500 ) {
+      if( [400, 404, 500].includes(status) ) {
         // Insert a row with an empty `data` field. DO NOT update existing rows!
         await q({package:pack.id, source, outreq:outreq.id, data: null},
           `INSERT INTO package_input as p ($(this~)) VALUES ($(this:csv)) ON CONFLICT DO NOTHING`);
