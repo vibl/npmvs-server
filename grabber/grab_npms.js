@@ -5,7 +5,7 @@ const {getTimestamp, sleep} = require('../util/vibl-util');
 
 const batchSize = 1000;
 const throttleDelay = 0;
-const endpointUrl = `https://api.npms.io/v2/package`;
+const endpointUrl = `https://api.npms.io/v2/package/`;
 const source = 2;
 
 let downloadCount = 0;
