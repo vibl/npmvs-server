@@ -31,12 +31,15 @@ CREATE TABLE public.package (
   id      SERIAL PRIMARY KEY,
   name    TEXT UNIQUE NOT NULL,
   data    JSONB,
-  updated TIMESTAMPTZ DEFAULT now()
+  updated TIMESTAMPTZ DEFAULT now(),
+  dirty BOOLEAN DEFAULT TRUE
 );
 CREATE INDEX package_name_index
   ON public.package (name);
 CREATE INDEX package_updated_index
   ON public.package (updated);
+CREATE INDEX package_dirty_index
+  ON public.package (dirty);
 
 CREATE TRIGGER package_updated
   BEFORE UPDATE

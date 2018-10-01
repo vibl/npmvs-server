@@ -4,7 +4,7 @@ const sql = require('./sql_tpl');
 const {getTimestamp, sleep} = require('../util/vibl-util');
 
 const batchSize = 1000;
-const throttleDelay = 0;
+const throttleDelay = 100;
 const endpointUrl = `https://api.npms.io/v2/package/`;
 const source = 2;
 
@@ -30,13 +30,14 @@ const getData = async (pack) => {
       await q({package:pack.id, source, outreq:outreq.id, data: null},
         `INSERT INTO package_input as p ($(this~)) VALUES ($(this:csv)) ON CONFLICT DO NOTHING`);
     } else {
-      console.log(`${getTimestamp()}: libio : ERROR ${error}`);
+      console.log(`${getTimestamp()}: npms : ERROR ${error}`);
     }
   }
 };
 const getBatchData = async (batch) => {
   for(let pack of batch) {
     await getData(pack);
+    await sleep(throttleDelay)
   }
 };
 const main = async () => {
@@ -50,7 +51,6 @@ const main = async () => {
     catch (err) {
       console.log(err);
     }
-    await sleep(throttleDelay)
   }
 };
 module.exports = main;
