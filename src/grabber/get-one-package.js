@@ -1,5 +1,5 @@
-const {q} = require('../src/db');
-const getData = require('../src/grabber/getPackageDataFromSource');
+const {q1} = require('../db');
+const getData = require('./getPackageDataFromSource');
 
 const endpointUrl = `https://api.npms.io/v2/package/`;
 const source = {
@@ -9,8 +9,8 @@ const source = {
 };
 
 const main = async (pack) => {
-  pack.id = await q([pack.name],
+  pack.id = await q1([pack.name],
       `SELECT id FROM package WHERE name LIKE $1`);
   return getData(source, pack);
 };
-main({name: 'lbdc-first-npm'}).then(console.log).catch(console.error);
+main({name: 'sanitize-filename'}).then(console.log).catch(console.error);

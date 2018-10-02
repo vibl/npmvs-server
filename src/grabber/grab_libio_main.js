@@ -35,7 +35,7 @@ const downloadWithAccount = async ({accountOffsetDelay, apiToken, throttleSleep}
   };
   while(true) {
     await sleep(accountOffsetDelay);
-    const batch = await q({source: sourceId, batchSize}, sql.package_BatchList);
+    const batch = await q({source_id: sourceId, batchSize}, sql.package_BatchList);
     if( batch.length === 0 ) break;
     await Promise.all(batch.map( packName => getData(source, packName)));
     await throttleSleep();
