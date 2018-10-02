@@ -1,4 +1,4 @@
-const {q} = require('../src/db');
+const {q} = require('../db');
 const sql = require('./sql_tpl');
 const getData = require('./getPackageDataFromSource');
 
@@ -25,7 +25,7 @@ const getBatchData = async (batch) => {
 const main = async () => {
   console.log('Grabbing data from NPMS...');
   while(true) {
-    const batch = await q({source: source.id, batchSize}, sql.package_BatchList);
+    const batch = await q({source_id: source.id, batchSize}, sql.package_BatchList);
     if( batch.length === 0 ) break;
     try {
       await getBatchData(batch);

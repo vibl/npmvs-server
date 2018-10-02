@@ -1,6 +1,6 @@
-const {q} = require('../src/db');
+const {q} = require('../db');
 const sql = require('./sql_tpl');
-const config = require('../src/config');
+const config = require('../config');
 const getData = require('./getPackageDataFromSource');
 const {sleep, throttleSleeper} = require('../util/vibl-util');
 

@@ -10,4 +10,4 @@ node_modules/
 /_tmp/
 /lib/
 /.env
-/_archive
+/npmvs/server/src/_archive

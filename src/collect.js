@@ -1,4 +1,4 @@
-const grab_npms = require('../grabber/grab_npms');
+const grab_npms = require('./grabber/grab_npms');
 const grab_libio = require('../server/grabber/grab_libio');
 
 const main = async () => {

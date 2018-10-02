@@ -1,4 +1,4 @@
-import {omit, values} from 'ramda';
+const {omit, values} = require('ramda');
 
 const periodsDaysAgo = [
   90,
@@ -7,7 +7,7 @@ const periodsDaysAgo = [
   730,
   Infinity
 ];
-export const extractReleasesCount = ({value :releases}) => {
+const extractReleasesCount = ({value :releases}) => {
   const now = Date.now();
   let releasesDaysAgo = values(omit(['modified', 'created'], releases)).map( date => (now - new Date(date)) / 1000 / 3600 / 24 );
   releasesDaysAgo.sort((a, b) => a - b);
@@ -23,4 +23,7 @@ export const extractReleasesCount = ({value :releases}) => {
      acc[period]++;
    }
    return acc;
+};
+module.exports = {
+  extractReleasesCount,
 };

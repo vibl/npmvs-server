@@ -12,9 +12,9 @@ const {
   difference, dissoc, drop, evolve, filter, flatten, flip, forEachObjIndexed,
   identity, indexBy, ifElse, infinity, intersection, intersperse,
   juxt, keys, length, lensPath,
-  map, match, max, merge, mergeAll, mergeDeepRight, mergeDeepWith, multiply, nth, not,
+  map, match, max, merge, mergeAll, mergeDeepRight, mergeDeepWith, mergeDeepWithKey, multiply, nth, not,
   objOf, or, path, pick, pipe, prepend, product, prop, props,
-  range, reduce, replace,
+  range, reduce, replace, reverse,
   slice, sort, split, tap, toPairs, trim, unapply, unless, values,
   when, without, zip, zipObj, zipWith
 } = R;
@@ -174,19 +174,70 @@ function toIntIfNumber(val) {
   return isNaN(val) ? val : parseInt(val);
 }
 
-const dotStringToPath = pipe(split('.'), map(toIntIfNumber));
-// Accepts dot-separated strings as path, or an array of dot-separated strings.
-let dotPath = () => {};
-dotPath = cond([
-  [Array.isArray, pipe(chain, dotPath)],
-  [_.isString, dotStringToPath]
-]);
+const pathFromDotpath = pipe(split('.'), map(toIntIfNumber));
 
-const lensDotPath = pipe(dotPath, lensPath);
+const lensDotpath = pipe(pathFromDotpath, lensPath);
 
-const assocDotPath = curry3((path, val, obj) => assocPath(dotPath(path), val, obj));
+const assocDotpath = curry3((path, val, obj) => assocPath(pathFromDotpath(path), val, obj));
 
-const getDotPath = curry2( (str, obj) => path(dotPath(str), obj) );
+const getDotpath = curry2( (str, obj) => path(pathFromDotpath(str), obj) );
+
+// Slow version
+// const indexValuesByPath = curry2( (pathsList, obj) => {
+//   let acc = {}, path;
+//   for(path of pathsList) {
+//     acc[path] = getDotpath(path, obj);
+//   }
+//   return acc;
+// });
+const getPathBranch = (dotpath) => {
+  const sep = '.';
+  const path = pathFromDotpath(dotpath);
+  let branch = null, segment,
+    branchPath = path,
+    leaf = true;
+  for(segment of reverse(path)) {
+    branch = {
+      [segment]: {
+        leaf,
+        path: branchPath.join(sep),
+        branch,
+      }
+    };
+    branchPath = branchPath.slice(0, -1); // Remove last segment of the path.
+    leaf = false;
+  }
+  return branch;
+};
+const mergeValues = (key, left, right) => {
+  if( key === 'path' && left !== right ){
+    throw new Error('Paths should be equal: ', left, right);
+  }
+  return left || right; // The one that says it's a leaf or there's a branch is right.
+};
+const mergePathBranches = mergeDeepWithKey(mergeValues);
+
+const getDotpathTreeFromDotpathList = (dotpathList) => {
+  let x;
+  x = dotpathList.map(getPathBranch);
+  x = x.reduce(mergePathBranches);
+  return x;
+};
+// See tests for an example.
+// We don't curry the recursive function because it may be faster.
+const indexValuesByDotpathRecurse = (indexTree, parent) => {
+  let branchAcc, key, acc = {};
+  for(key in indexTree) {
+    let {leaf, path, branch} = indexTree[key];
+    if( leaf ) acc[path] = parent[key];
+    if( branch ) {
+      branchAcc = indexValuesByDotpathRecurse(branch, parent[key]);
+      Object.assign(acc, branchAcc);
+    }
+  }
+  return acc;
+};
+const indexValuesByDotpath = curry2(indexValuesByDotpathRecurse);
 
 const colStringToPath = pipe(split(':'), map(toIntIfNumber));
 // Accepts col-separated strings as path, or an array of col-separated strings.
@@ -307,8 +358,8 @@ const transform = curry2( (spec, obj) => {
   for( key in obj ) res[key] = obj[key];
   for( key in spec ) {
     if( key.includes('.') ) {
-      spec = assocDotPath(key, spec[key], {});
-      key = dotStringToPath(key)[0];
+      spec = assocDotpath(key, spec[key], {});
+      key = pathFromDotpath(key)[0];
     }
     specVal = spec[key];
     objVal = obj[key];
@@ -501,21 +552,21 @@ const switchValue = curry2( (cases, val) => {
 });
 
 const viblPure = {
-  added, allEquals, anyValue, appendStr, assocColPath, assocDotPath, areEquals, haveSameElements,
+  added, allEquals, anyValue, appendStr, assocColPath, assocDotpath, assocDotPath: assocDotpath, areEquals, haveSameElements,
   bindAll, bindAllDeep, budge,
   collect, colPath, combine, concatArray, concatLeft, curry2, curry3, curryFlip, deIndex,
-  discard, dissocAll, doesMatch, dotPath, dotStringToPath, equals, equalsAny,
+  discard, dissocAll, doesMatch,equals, equalsAny,
   fnOr, filterKeys, filterP, flipAll, from,
-  geoMean, get, getColPath, getDotPath, gradient, hsl,
-  ifDefinedElse, ident, indexByProp, indexValWithKey, interleave, isBlank, isEmpty, isFunction,
+  geoMean, get, getColPath, getDotpath, getDotPath: getDotpath, getDotpathTreeFromDotpathList, gradient, hsl,
+  ifDefinedElse, ident, indexByProp, indexValWithKey, indexValuesByDotpath, interleave, isBlank, isEmpty, isFunction,
   isNegative, isNumber, isObject, isObjectLike, isPlainObject, isString,
   keep, keepRandom,
-  lacksElementsOf, lensDotPath, lineBreaksToSpace, listMax, listMin, log,
+  lacksElementsOf, lensDotpath, lensDotPath: lensDotpath, lineBreaksToSpace, listMax, listMin, log,
   mapDeep, mapIf, mapIndex, mapKeys, mapValues, mergeDeepWithArray, mergeLeft,
   mergeAllTables, mergeAllTablesNotBlank, mergeTables, mergeTablesNotBlank,
   notBlank, notEmpty, notMatch, nthRoot,
   mapToArray, overlaps,
-  percent, pipeD, pipeLog, pMap, prefixLine, preIntersperse, putFirst,
+  pathFromDotpath,  dotPath: pathFromDotpath, percent, pipeD, pipeLog, pMap, prefixLine, preIntersperse, putFirst,
   random, rangeMap, rangeStep, reduceFirst, reduceFirstP, reduceIndexed, reduceP,
   reduceSteps, reduceTemplate, reIndex, removed, removeShortest, rest, reverseDifference, round,
   splitLinesTrim, splitPipe, splitProperties, store, switchValue,

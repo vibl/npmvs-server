@@ -15,14 +15,18 @@ const q = async (arg1, arg2) => {
   db = db || await dbP;
   let res = await db.query(sql, params);
   // If the result(s) are/is object(s) with just one key, get rid of the key and get only the value.
-  const sample = Array.isArray(res) ? res[0] : res;
-  if( sample) {
-    const keys = Object.keys(sample);
+  const testSample = Array.isArray(res) ? res[0] : res;
+  if( testSample) {
+    const keys = Object.keys(testSample);
     if( keys.length === 1 ) {
       res = res.map( o => o[keys[0]]);
     }
   }
   return res;
+};
+const oneResult = (fn) => async (...args) => {
+  const res = await fn(...args);
+  return res[0];
 };
 const insert = (data, ...rest) => {
   // If there is only one string argument in the rest, consider it as the table name (and so place
@@ -31,6 +35,9 @@ const insert = (data, ...rest) => {
   const sql = pgp.helpers.insert(data, ...rest) + ' RETURNING *';
   return q(sql);
 };
+const q1 = oneResult(q);
+const insert1 = oneResult(insert);
+
 // TODO: take another shot at this function basing it on helpers.insert:
 // https://github.com/vitaly-t/pg-promise/blob/ee34110368f29b14f913665e8803c86361ec3f00/lib/helpers/methods/insert.js
 // const upsert = (data, conflictColumns, ...rest) => {
@@ -56,5 +63,7 @@ module.exports = {
   dbP,
   pgp,
   q,
+  q1,
   insert,
+  insert1,
 };

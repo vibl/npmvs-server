@@ -1,4 +1,4 @@
-const {q, insert, pgp} = require('../src/db');
+const {q, insert, pgp} = require('../db');
 const http = require('../http');
 const sql = require('./sql_tpl');
 const {keys} = require('ramda');

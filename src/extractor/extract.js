@@ -31,19 +31,5 @@ const getValueFromFnSpec = (spec, dataIndex) => {
   const args = argsPaths.map( s => dataIndex[s]);
   return fn(...args);
 };
-const extractData = (specs, sources) => {
-  let acc = {}, value;
-  const dataIndex = getFullIndex(sources);
-  for(let key in specs ) {
-    const spec = specs[key];
-    if( typeof spec === 'string' ) {
-       value = dataIndex[spec];
-    } else if( Array.isArray(spec) ) {
-      value = getValueFromFnSpec(spec, dataIndex);
-    } else {
-      throw new Error('A specs value should either be a string or an array. Found: ', typeof spec, spec);
-    }
-    acc[key] = value;
-  }
-};
+
 module.exports = extractData;
