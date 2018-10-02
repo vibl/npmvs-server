@@ -22,14 +22,6 @@ const getFullIndex = (sources) => {
       ({...acc, ...getIndex(sourceName, data)})
   )
 };
-const getValueFromFnSpec = (spec, dataIndex) => {
-  const argsPaths = spec.slice(0, -1);
-  const fn = spec.slice(-1)[0];
-  if (typeof fn !== 'function') {
-    throw new Error('Last element of a spec array should be a function');
-  }
-  const args = argsPaths.map( s => dataIndex[s]);
-  return fn(...args);
-};
+
 
 module.exports = extractData;

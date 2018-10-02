@@ -82,8 +82,7 @@ CREATE INDEX package_input_outreq_index
 CREATE INDEX package_input_updated_index
   ON package_input (updated);
 
-CREATE INDEX package_input_data_error_index
-  ON package_input ((data ->> 'error'));
+CREATE INDEX package_input_data_gin_index ON package_input USING gin (data);
 
 CREATE TRIGGER package_input_updated
   BEFORE UPDATE

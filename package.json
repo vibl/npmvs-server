@@ -6,7 +6,7 @@
   "author": "Vianney Stroebel",
   "license": "ISC",
   "scripts": {
-    "start": "node index.js",
+    "start": "node src/server.js",
     "test": "jest"
   },
   "jest": {

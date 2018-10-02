@@ -1,7 +1,8 @@
 const Koa = require('koa');
 const Router = require('koa-router');
 const cors = require('@koa/cors');
-const { init, getNpmsData, getDowloadsData } = require('./engine');
+// const { init, getDowloadsData } = require('./engine');
+const getPackageData = require('./extractor/compile');
 
 require('dotenv').config();
 
@@ -25,13 +26,13 @@ const responseTime = async (ctx, next) => {
   ctx.set('X-Response-Time', `${ms}ms`);
 };
 router.get('/package/:packName', async (ctx) => {
-  const data = await getNpmsData(ctx.params.packName);
+  const data = await getPackageData(ctx.params.packName);
   ctx.body = data;
 });
-router.get('/downloads/:packName', async (ctx) => {
-  const data = await getDowloadsData(ctx.params.packName);
-  ctx.body = data;
-});
+// router.get('/downloads/:packName', async (ctx) => {
+//   const data = await getDowloadsData(ctx.params.packName);
+//   ctx.body = data;
+// });
 app
 //.use(debug)
   .use(cors({origin:'*'}))
@@ -41,7 +42,7 @@ app
   .use(router.allowedMethods());
 
 async function main() {
-  await init();
+  // await init();
   const port = process.env.SERVER_PORT;
   app.listen(port);
   return `Listening on port ${port}...`;
