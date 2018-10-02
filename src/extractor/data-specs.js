@@ -1,5 +1,3 @@
-const {extractReleasesCount} = require('./extractFns');
-
 module.exports = {
   name: 'npms.collected.metadata.name',
   version: 'npms.collected.metadata.version',
@@ -10,10 +8,10 @@ module.exports = {
   publisher: 'npms.collected.metadata.publisher',
   maintainers: 'npms.collected.metadata.maintainers',
   npmUrl: 'npms.collected.metadata.links.npm',
-  homepage: 'npms.collected.github.homepage',
-  homepage2: 'npms.collected.metadata.links.homepage',
-  repository: 'npms.collected.metadata.links.repository',
-  bugs: 'npms.collected.metadata.links.bugs',
+  homepageUrl: 'npms.collected.github.homepage',
+  homepage2Url: 'npms.collected.metadata.links.homepage',
+  repositoryUrl: 'npms.collected.metadata.links.repository',
+  bugsUrl: 'npms.collected.metadata.links.bugs',
   starsCount: 'npms.collected.github.starsCount',
   forksCount: 'npms.collected.github.forksCount',
   subscribersCount: 'npms.collected.github.subscribersCount',
@@ -23,10 +21,12 @@ module.exports = {
   openIssuesCount: 'npms.collected.github.issues.openCount',
   license: 'npms.collected.metadata.license',
   dependencies: 'npms.collected.metadata.dependencies',
+  dependents: 'npms.collected.npm.dependentsCount',
   readme: 'npms.collected.metadata.readme',
-  contributors: 'npms.collected.github.contributors',
+  commits: 'npms.collected.github.commits',
   releasesForPeriod: [
     'npms.collected.metadata.releases',
     a => a.map(o => o.count),
   ],
+  contributors: 'npms.collected.github.contributors',
 };
