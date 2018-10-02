@@ -20,8 +20,8 @@ module.exports = {
   issuesDistribution: 'npms.collected.github.issues.distribution',
   openIssuesCount: 'npms.collected.github.issues.openCount',
   license: 'npms.collected.metadata.license',
+  dependentsCount: 'npms.collected.npm.dependentsCount',
   dependencies: 'npms.collected.metadata.dependencies',
-  dependents: 'npms.collected.npm.dependentsCount',
   readme: 'npms.collected.metadata.readme',
   commits: 'npms.collected.github.commits',
   releasesForPeriod: [
