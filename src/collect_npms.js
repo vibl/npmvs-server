@@ -1,8 +1,8 @@
 
-const grab_npms = require('./grabber/grab_npms');
+const {getMissingPackages} = require('./grabber/grab_npms');
 
 const main = async () => {
-  return grab_npms();
+  return getMissingPackages();
 };
 
 main().then(console.log).catch(console.error);

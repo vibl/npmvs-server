@@ -1,8 +1,8 @@
 
-const grab_libio = require('./grabber/grab_libio_main');
+const {getMissingPackages} = require('./grabber/grab_libio_main');
 
 const main = async () => {
-  return grab_libio();
+  return getMissingPackages();
 };
 
 main().then(console.log).catch(console.error);

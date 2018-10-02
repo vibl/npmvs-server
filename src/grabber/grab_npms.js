@@ -1,7 +1,6 @@
 const {q} = require('../db');
 const sql = require('./sql_tpl');
 const getData = require('./getPackageDataFromSource');
-
 const {throttleSleeper} = require('../util/vibl-util');
 
 const batchSize = 1000;
@@ -15,14 +14,13 @@ const source = {
   name: 'npms',
   getUrl: (packName) => endpointUrl + encodeURIComponent(packName.toLowerCase()),
 };
-
 const getBatchData = async (batch) => {
   for(let pack of batch) {
     await getData(source, pack);
     await throttleSleep();
   }
 };
-const main = async () => {
+const getMissingPackages = async () => {
   console.log('Grabbing data from NPMS...');
   while(true) {
     const batch = await q({source_id: source.id, batchSize}, sql.package_BatchList);
@@ -35,4 +33,7 @@ const main = async () => {
     }
   }
 };
-module.exports = main;
+module.exports = {
+  source,
+  getMissingPackages,
+};
