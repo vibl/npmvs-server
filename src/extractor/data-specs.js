@@ -24,6 +24,7 @@ module.exports = {
   license: 'npms.collected.metadata.license',
   dependencies: 'npms.collected.metadata.dependencies',
   readme: 'npms.collected.metadata.readme',
+  contributors: 'npms.collected.github.contributors',
   releasesForPeriod: [
     'npms.collected.metadata.releases',
     a => a.map(o => o.count),
