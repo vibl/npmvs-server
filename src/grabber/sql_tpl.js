@@ -6,6 +6,7 @@ sql.package_BatchList = `
   (SELECT package_id FROM package_input WHERE source_id = $(source_id) ) AS downloaded
     ON package.id = downloaded.package_id
   WHERE downloaded.package_id IS NULL
+  ORDER BY package_id
   LIMIT $(batchSize)
 `;
 sql.package_input_Upsert = `

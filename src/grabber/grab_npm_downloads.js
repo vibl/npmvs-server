@@ -18,7 +18,7 @@ const concurrency = 5;
 
 const source = {
   id: 3,
-  name: 'npm_dowloads',
+  name: 'npm_downloads',
 };
 
 const logResponse = (outreq) => q1(outreq, sql.outreq_update_received_now);
@@ -71,7 +71,7 @@ const getData = async (source, pack) => {
     } else {
       error = err;
     }
-    console.log(`${getTimestamp()}: ${source.name} : ERROR ${error} (${url})`);
+    console.log(`${getTimestamp()}: ${source.name} : ERROR ${error} (${pack.name})`);
 
   }
 };

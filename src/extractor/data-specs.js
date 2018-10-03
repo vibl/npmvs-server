@@ -1,3 +1,5 @@
+const {downloadsMonthlyAggregate} = require('./extractFns');
+
 module.exports = {
   name: 'npms.collected.metadata.name',
   version: 'npms.collected.metadata.version',
@@ -29,4 +31,8 @@ module.exports = {
     a => a.map(o => o.count),
   ],
   contributors: 'npms.collected.github.contributors',
+  downloads: [
+    'npm_downloads.downloads',
+    downloadsMonthlyAggregate,
+  ]
 };
