@@ -43,7 +43,7 @@ const ranges = getRanges();
 // exist natively in js). This look-behind excludes a double set of slashes (\\) because that's an escape
 // of an escape character, which means the string '\u0000' is meant literally in the text (probably in some
 // code example).
-const getUrl = (packName, range) => endpointUrl + range + '/' + encodeURIComponent(packName.toLowerCase());
+const getUrl = (packName, range) => endpointUrl + range + '/' + packName.toLowerCase();
 
 const getData = async (source, pack) => {
   let outreq = await insert1({received: null}, 'outreq');
