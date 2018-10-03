@@ -71,7 +71,7 @@ const getData = async (source, pack) => {
     } else {
       error = err;
     }
-    console.log(`${getTimestamp()}: ${source.name} : ERROR ${error} (${pack.name})`);
+    console.log(`${getTimestamp()}: ${source.name} : ERROR ${error} (${urls[0]})`);
 
   }
 };
