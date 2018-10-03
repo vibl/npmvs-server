@@ -11,14 +11,15 @@ const getTimestampDigits =  (date = new Date()) => {
   return (new Date(Date.now() - tzoffset)).toISOString().slice(0, 19)
     .replace(/\D/g, '');
 };
-const throttleSleeper = (maxDuration, start = Date.now()) => {
+const throttleSleeper = (maxDuration, start = Date.now(),) => {
   let tick, previousTick = start;
-  return async () => {
+  return async (debug = false) => {
     tick = Date.now();
     const duration = tick - previousTick;
     previousTick = tick;
     const throttleDelay =  maxDuration - duration;
     if( throttleDelay > 0 ) {
+      if( debug ) console.log('THROTTLESLEEPER: sleeping for ' + (throttleDelay/1000).toPrecision(2) + 'seconds');
       await sleep(throttleDelay);
     }
     return tick;

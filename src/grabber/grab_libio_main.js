@@ -42,7 +42,7 @@ const downloadWithAccount = async ({accountOffsetDelay, apiToken, throttleSleep}
   }
 };
 const getMissingPackages = async () => {
-  console.log('Downloading Libraries.io packages data...');
+  console.log('Grabbing data from Libraries.io...');
   const accounts = config.apiTokens.libio.map(getAccountConfig);
   try {
     await Promise.all(accounts.map(downloadWithAccount));
