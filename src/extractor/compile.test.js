@@ -1,6 +1,6 @@
 const compile = require('./compile');
 
 const main = async () => {
-  return compile('yobi');
+  return compile('mocha');
 };
 main().then(console.log).catch(console.error);

@@ -1,4 +1,4 @@
-const {omit, values} = require('ramda');
+const {last, omit, slice, values} = require('ramda');
 
 const periodsDaysAgo = [
   90,
@@ -32,11 +32,11 @@ const downloadsMonthlyAggregate = (data) => {
   let currentMonth,
     acc = 0,
     daysCount = 0,
-    previous = getMonth(data[0].day);
+    previous = getMonth(data[0][0]);
   for (const [day, downloads] of data) {
     currentMonth = getMonth(day);
     if (currentMonth !== previous || day === lastDay) {
-      result.push({month: previous, value: Math.round(acc / daysCount * 365 / 12)});
+      result.push([previous, acc]);
       acc = 0;
       daysCount = 0;
     }
