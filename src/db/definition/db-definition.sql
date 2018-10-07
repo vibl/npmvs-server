@@ -31,6 +31,7 @@ CREATE TABLE package (
   id      SERIAL PRIMARY KEY,
   name    TEXT UNIQUE NOT NULL,
   data    JSONB,
+  github_repo TEXT,
   updated TIMESTAMPTZ DEFAULT now(),
   dirty BOOLEAN DEFAULT TRUE
 );
@@ -40,6 +41,8 @@ CREATE INDEX package_updated_index
   ON package (updated);
 CREATE INDEX package_dirty_index
   ON package (dirty);
+CREATE INDEX package_github_repo_index
+  ON package (github_repo);
 
 CREATE TRIGGER package_updated
   BEFORE UPDATE

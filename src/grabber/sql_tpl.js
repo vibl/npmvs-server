@@ -1,5 +1,4 @@
 let sql = {};
-
 sql.package_BatchList = `
   SELECT package.id, package.name FROM package
   LEFT OUTER JOIN

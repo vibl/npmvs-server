@@ -5,6 +5,7 @@ const _ = _i(require('lodash'));
 const R = _i(require('ramda'));
 const pMapOrig = _i(require('p-map'));
 const deepEql = _i(require("deep-eql"));
+
 /* eslint-disable no-unused-vars*/ 
 const {
   F, T, addIndex, all, always, any, append, apply, assoc, assocPath, binary,
@@ -226,7 +227,8 @@ const getDotpathTreeFromDotpathList = (dotpathList) => {
 // See tests for an example.
 // We don't curry the recursive function because it may be faster.
 const indexValuesByDotpathRecurse = (indexTree, parent) => {
-  let branchAcc, key, acc = {};
+  let branchAcc, key, value, acc = {};
+  if( ! parent || typeof parent !== 'object' ) return acc;
   for(key in indexTree) {
     let {leaf, path, branch} = indexTree[key];
     if( leaf ) acc[path] = parent[key];
@@ -551,6 +553,8 @@ const switchValue = curry2( (cases, val) => {
   return val;
 });
 
+const orNull = (fn) => (arg) => fn(arg) || null;
+
 const viblPure = {
   added, allEquals, anyValue, appendStr, assocColPath, assocDotpath, assocDotPath: assocDotpath, areEquals, haveSameElements,
   bindAll, bindAllDeep, budge,
@@ -565,7 +569,7 @@ const viblPure = {
   mapDeep, mapIf, mapIndex, mapKeys, mapValues, mergeDeepWithArray, mergeLeft,
   mergeAllTables, mergeAllTablesNotBlank, mergeTables, mergeTablesNotBlank,
   notBlank, notEmpty, notMatch, nthRoot,
-  mapToArray, overlaps,
+  mapToArray, overlaps, orNull,
   pathFromDotpath,  dotPath: pathFromDotpath, percent, pipeD, pipeLog, pMap, prefixLine, preIntersperse, putFirst,
   random, rangeMap, rangeStep, reduceFirst, reduceFirstP, reduceIndexed, reduceP,
   reduceSteps, reduceTemplate, reIndex, removed, removeShortest, rest, reverseDifference, round,

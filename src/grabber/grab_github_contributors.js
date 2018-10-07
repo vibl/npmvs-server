@@ -7,8 +7,6 @@ const http = require('../http');
 const {flatten} = require('lodash');
 const {getTimestamp, throttleSleeper} = require('../util/vibl-util');
 
-
-const endpointUrl = `https://api.npmjs.org/downloads/range/`;
 const batchSize = 1000;
 const concurrency = 5;
 // const rateLimit = 10; // Requests per second.
@@ -17,38 +15,28 @@ const concurrency = 5;
 
 
 const source = {
-  id: 3,
-  name: 'npm_downloads',
+  id: 4,
+  name: 'github_contributors',
 };
 
 const logResponse = (outreq) => q1(outreq, sql.outreq_update_received_now);
-const firstAvailableDate = new Date('2015-01-10');
+const getUrl = (githubRepoId) => `https://api.github.com/repos/${githubRepoId}/stats/contributors`;
 
-const getRanges = () => {
-  let acc = [], startDate = firstAvailableDate, endDate, range;
-  while(true) {
-    endDate = addMonths(startDate, 18);
-    range = [startDate, endDate].map(date => format(date, 'YYYY-MM-DD')).join(':');
-    acc.push(range);
-    startDate = endDate;
-    if( startDate > new Date() ) break;
-  }
-  return acc;
+const getGithubRepo = (pack) => {
+  const whereCondition = typeof pack === 'number' ? 'id = ${pack}' : 'name LIKE ${pack}';
+  return q1({pack}, `SELECT github_repo FROM package WHERE ${whereCondition}`);
 };
-const ranges = getRanges();
-
-const getUrl = (packName, range) => endpointUrl + range + '/' + packName;
-
 const getData = async (source, pack) => {
   let outreq = await insert1({received: null}, 'outreq');
-  const urls = ranges.map(range => getUrl(pack.name, range));
-  // console.log('Downloading data for package:', pack.name);
+  console.log('Downloading data for package:', pack.name);
+  const githubRepo = await getGithubRepo(pack.id);
+  const url = getUrl(githubRepo);
+  //TODO: gérer la situation où le repoId a changé (redirection). Exemple: 'uber-common/react-vis' => 'uber/react-vis'
   try {
-    const data = await Promise.all(urls.map(http.getData));
-    const downloads = flatten(data.map(o => o.downloads.map(o => [o.day, o.downloads])));
+    const data = await http.getData(url);
     outreq = await logResponse(outreq);
     // I could not find a way to insert an array in a jsonb column, so we must wrap it in an object here.
-    await q({package_id:pack.id, source_id: source.id, outreq_id:outreq.id, data: {downloads}},
+    await q({package_id:pack.id, source_id: source.id, outreq_id:outreq.id, data},
       sql.package_input_Upsert);
   }
   catch(err) {
@@ -66,7 +54,7 @@ const getData = async (source, pack) => {
     } else {
       error = err;
     }
-    console.log(`${getTimestamp()}: ${source.name} : ERROR ${error} (${urls[0]})`);
+    console.log(`${getTimestamp()}: ${source.name} : ERROR ${error} (${url})`);
 
   }
 };
