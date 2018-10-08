@@ -11,3 +11,5 @@ node_modules/
 /lib/
 /.env
 /npmvs/server/src/_archive
+/nogit/
+secrets.js

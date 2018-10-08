@@ -3,7 +3,6 @@ function _i(required) {
 }
 const _ = _i(require('lodash'));
 const R = _i(require('ramda'));
-const pMapOrig = _i(require('p-map'));
 const deepEql = _i(require("deep-eql"));
 
 /* eslint-disable no-unused-vars*/ 
@@ -334,8 +333,6 @@ const budge = (fn) => curry3((...args) => {
   args.unshift(args.pop());
   return fn(...args);
 });
-// Map over promises concurrently (By Sindre Sorhus)
-const pMap = flip(pMapOrig);
 
 const keep = curry2((list, arr) => {
   const res = [];
@@ -570,7 +567,7 @@ const viblPure = {
   mergeAllTables, mergeAllTablesNotBlank, mergeTables, mergeTablesNotBlank,
   notBlank, notEmpty, notMatch, nthRoot,
   mapToArray, overlaps, orNull,
-  pathFromDotpath,  dotPath: pathFromDotpath, percent, pipeD, pipeLog, pMap, prefixLine, preIntersperse, putFirst,
+  pathFromDotpath,  dotPath: pathFromDotpath, percent, pipeD, pipeLog, prefixLine, preIntersperse, putFirst,
   random, rangeMap, rangeStep, reduceFirst, reduceFirstP, reduceIndexed, reduceP,
   reduceSteps, reduceTemplate, reIndex, removed, removeShortest, rest, reverseDifference, round,
   splitLinesTrim, splitPipe, splitProperties, store, switchValue,

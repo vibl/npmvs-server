@@ -3,6 +3,7 @@ const format= require('date-fns/format');
 const pMap = require('p-map');
 const {q, q1, insert1} = require('../db');
 const sql = require('./sql_tpl');
+const secrets = require('../secrets');
 const http = require('../http');
 const {flatten} = require('lodash');
 const {getTimestamp, throttleSleeper} = require('../util/vibl-util');
@@ -12,7 +13,7 @@ const concurrency = 5;
 // const rateLimit = 10; // Requests per second.
 // const minRequestDuration = 1000 / rateLimit; // In ms.
 // const throttleSleep = throttleSleeper(minRequestDuration);
-
+const apiToken = secrets.apiTokens.github[0];
 
 const source = {
   id: 4,

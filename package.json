@@ -1,10 +1,10 @@
 {
   "name": "npmvs-server",
   "version": "1.0.0",
-  "description": "The machinery that collects, analyzes and stores data for NPMvs",
+  "description": "The machinery that collects, analyzes, stores and serves data for NPMvs",
   "main": "index.js",
   "author": "Vianney Stroebel",
-  "license": "ISC",
+  "private": true,
   "scripts": {
     "start": "node src/server.js",
     "test": "jest"

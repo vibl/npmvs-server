@@ -1,10 +1,10 @@
 const {q} = require('../db');
 const sql = require('./sql_tpl');
-const config = require('../config');
+const secrets = require('../secrets');
 const getData = require('./getPackageDataFromSource');
 const {sleep, throttleSleeper} = require('../util/vibl-util');
 
-const batchSize = 60;//TODO: set back to 60 !
+const batchSize = 60;
 // Don't use viblApiToken because I don't want to be identified, let alone blacklisted,
 // with my real GitHub account.
 // const viblApiToken = "653f8ad38c7c9c60ac58a88f8e9a0876";
@@ -20,7 +20,7 @@ const urlBuilder = (apiToken) => (packName) =>
 const source = {
   id: 1,
   name: 'libio_main',
-  getUrl: urlBuilder(config.apiTokens.libio[0]), // Use the first token by default (any would do).
+  getUrl: urlBuilder(secrets.apiTokens.libio[0]), // Use the first token by default (any would do).
 };
 const getAccountConfig = (apiToken, i) => {
   const accountOffsetDelay =  i * 6000;
@@ -43,7 +43,7 @@ const downloadWithAccount = async ({accountOffsetDelay, apiToken, throttleSleep}
 };
 const getMissingPackages = async () => {
   console.log('Grabbing data from Libraries.io...');
-  const accounts = config.apiTokens.libio.map(getAccountConfig);
+  const accounts = secrets.apiTokens.libio.map(getAccountConfig);
   try {
     await Promise.all(accounts.map(downloadWithAccount));
   }
