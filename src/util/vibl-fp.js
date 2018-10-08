@@ -240,18 +240,11 @@ const indexValuesByDotpathRecurse = (indexTree, parent) => {
 };
 const indexValuesByDotpath = curry2(indexValuesByDotpathRecurse);
 
-const colStringToPath = pipe(split(':'), map(toIntIfNumber));
-// Accepts col-separated strings as path, or an array of col-separated strings.
-let colPath = () => {};
-colPath = cond([
-  [Array.isArray, pipe(chain, colPath)],
-  [_.isString, colStringToPath]
-]);
+const pathFromColpath = pipe(split(':'), map(toIntIfNumber));
 
-const assocColPath = curry3((path, val, obj) => assocPath(colPath(path), val, obj));
+const assocColpath = curry3((path, val, obj) => assocPath(pathFromColpath(path), val, obj));
 
-const getColPath = curry2( (str, obj) => path(colPath(str), obj) );
-
+const getColpath = curry2( (str, obj) => path(pathFromColpath(str), obj) );
 
 const overlaps = pipe(intersection, notEmpty);
 
@@ -356,9 +349,9 @@ const transform = curry2( (spec, obj) => {
   let res = {}, key, objVal, specVal, specType;
   for( key in obj ) res[key] = obj[key];
   for( key in spec ) {
-    if( key.includes('.') ) {
-      spec = assocDotpath(key, spec[key], {});
-      key = pathFromDotpath(key)[0];
+    if( key.includes(':') ) {
+      spec = assocColpath(key, spec[key], {});
+      key = pathFromColpath(key)[0];
     }
     specVal = spec[key];
     objVal = obj[key];
@@ -553,21 +546,21 @@ const switchValue = curry2( (cases, val) => {
 const orNull = (fn) => (arg) => fn(arg) || null;
 
 const viblPure = {
-  added, allEquals, anyValue, appendStr, assocColPath, assocDotpath, assocDotPath: assocDotpath, areEquals, haveSameElements,
+  added, allEquals, anyValue, appendStr, assocColpath, assocDotpath, assocDotPath: assocDotpath, areEquals, haveSameElements,
   bindAll, bindAllDeep, budge,
-  collect, colPath, combine, concatArray, concatLeft, curry2, curry3, curryFlip, deIndex,
+  collect, combine, concatArray, concatLeft, curry2, curry3, curryFlip, deIndex,
   discard, dissocAll, doesMatch,equals, equalsAny,
   fnOr, filterKeys, filterP, flipAll, from,
-  geoMean, get, getColPath, getDotpath, getDotPath: getDotpath, getDotpathTreeFromDotpathList, gradient, hsl,
+  geoMean, get, getColpath, getDotpath, getDotPath: getDotpath, getDotpathTreeFromDotpathList, gradient, hsl,
   ifDefinedElse, ident, indexByProp, indexValWithKey, indexValuesByDotpath, interleave, isBlank, isEmpty, isFunction,
   isNegative, isNumber, isObject, isObjectLike, isPlainObject, isString,
   keep, keepRandom,
   lacksElementsOf, lensDotpath, lensDotPath: lensDotpath, lineBreaksToSpace, listMax, listMin, log,
-  mapDeep, mapIf, mapIndex, mapKeys, mapValues, mergeDeepWithArray, mergeLeft,
+  mapDeep, mapIf, mapIndex, mapKeys, mapToArray, mapValues, mergeDeepWithArray, mergeLeft,
   mergeAllTables, mergeAllTablesNotBlank, mergeTables, mergeTablesNotBlank,
   notBlank, notEmpty, notMatch, nthRoot,
-  mapToArray, overlaps, orNull,
-  pathFromDotpath,  dotPath: pathFromDotpath, percent, pipeD, pipeLog, prefixLine, preIntersperse, putFirst,
+  overlaps, orNull,
+  pathFromColpath, pathFromDotpath, dotPath: pathFromDotpath, percent, pipeD, pipeLog, prefixLine, preIntersperse, putFirst,
   random, rangeMap, rangeStep, reduceFirst, reduceFirstP, reduceIndexed, reduceP,
   reduceSteps, reduceTemplate, reIndex, removed, removeShortest, rest, reverseDifference, round,
   splitLinesTrim, splitPipe, splitProperties, store, switchValue,

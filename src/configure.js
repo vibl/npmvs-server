@@ -3,7 +3,6 @@
 const Promise = require('bluebird');
 const pino = require('pino');
 const forIn = require('lodash/forIn');
-const Big = require('bignumber.js');
 
 // Configure bluebird
 // ----------------------------------------------------

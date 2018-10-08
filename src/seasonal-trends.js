@@ -4,7 +4,7 @@ const {add, map, mean, pipe, prop, transpose, reduce, values} = require('ramda')
 const {config} = require('./data-fetching');
 const cache = require('./cache');
 const {fetchData} = require('../../collector/http');
-const {agreggateDownloadsData, agreggateDownloadsDataCached} = require('./engine');
+const {agreggateDownloadsData, agreggateDownloadsDataCached} = require('../../_archive/server/engine');
 
 const sum = reduce(add, 0);
 
